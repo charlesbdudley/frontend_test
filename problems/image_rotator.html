@@ -3,13 +3,11 @@
 <head>
 	<title>Frontend Coding Test</title>
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
+  <link type="text/css" rel="stylesheet" href="../css/image_rotator.css" />
 	<style type="text/css">
 		#rotator {
 			width: 450px;
 			height: 300px;
-			border: 1px solid black;
-			background: #aaa;
-			text-align: center;
 		}
 	</style>
 </head>
@@ -32,28 +30,48 @@
 
 	<hr />
 
-	<h4>Katarina</h4>
-	<p>Fruitcake bonbon donut jelly-o brownie biscuit marzipan pie.</p>
-	<img src="../img/kat_1.jpg" /><br/>
-
-	<h4>Red Card Katarina</h4>
-	<p>Cheesecake marzipan cupcake biscuit candy canes pudding.</p>
-	<img src="../img/kat_2.jpg" /><br/>
-
-	<h4>Kitty Cat Katarina</h4>
-	<p>Applicake topping halvah lemon drops wypas cotton candy.</p>
-	<img src="../img/kat_3.jpg" /><br/>
-
-	<h4>High Command Katarina</h4>
-	<p>Oat cake macaroon souffle cupcake chupa chups chocolate bar bear claw dragee lemon drops.</p>
-	<img src="../img/kat_4.jpg" /><br/>
-
-	<hr/>
-
 	<div id="rotator">
 		Rotator Here
 	</div>
 </div>
 
+<script src="../js/image_rotator.js"></script>
+<script>
+  // Wrapping this class instantiation in an IIFE to
+  // keep global scope pure
+  (function() {
+    // Instead of populating the data from DOM elements it seems
+    // more appropraite to explicitly pass an array of slide objects
+    var slides = [
+      {
+        title: 'Katarina',
+        description: 'Fruitcake bonbon donut jelly-o brownie biscuit marzipan pie.',
+        image: '../img/kat_1.jpg'
+      },
+      {
+        title: 'Red Card Katarina',
+        description: 'Cheesecake marzipan cupcake biscuit candy canes pudding.',
+        image: '../img/kat_2.jpg'
+      },
+      {
+        title: 'Kitty Cat Katarina',
+        description: 'Applicake topping halvah lemon drops wypas cotton candy.',
+        image: '../img/kat_3.jpg'
+      },
+      {
+        title: 'High Command Katarina',
+        description: 'Oat cake macaroon souffle cupcake chupa chups chocolate bar bear claw dragee lemon drops.',
+        image: '../img/kat_4.jpg'
+      }
+    ];
+
+    // Instantiates a new ImageRotatorComponent found in ../js/image_rotator.js
+    new Riot.ImageRotatorComponent({
+      slides: slides,
+      container: document.getElementById('rotator'),
+      durationPerSlide: 3000
+    });
+  })();
+</script>
 </body>
 </html>

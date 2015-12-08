@@ -17,7 +17,7 @@ var Riot = Riot || {};
    *
    * @callback options.onSearchResult - a function that's called after a search has been completed
    * @param {String} query - the search query
-   * @param {String[]} results - an array of search result snippits
+   * @param {String[]} results - an array of search result snippets
    */
   function TextSearchComponent(options) {
     // We're removing citations from our searchable text
@@ -100,35 +100,35 @@ var Riot = Riot || {};
   }
 
   /**
-   * Creates a text snippit of a search result
+   * Creates a text snippet of a search result
    * @param  {RegExp} match - RegExp of a search match
    * @param  {Number} queryLength - length of query
    * @param  {Number} entireTextLength - length of search text
-   * @return {String} formatted text snippit of search result
+   * @return {String} formatted text snippet of search result
    */
   function formatSearchResult(match, queryLength, entireTextLength) {
-    // For each match we're going to include a snippit
+    // For each match we're going to include a snippet
     // of surrounding text. We're also going to include
-    // indexes for where the query falls in the snippit
+    // indexes for where the query falls in the snippet
     var highlightIndexStart = match.index;
     var highlightIndexEnd = match.index + queryLength;
-    var snippitIndexStart = match.index - 50;
-    var snippitIndexEnd = match.index + 50;
+    var snippetIndexStart = match.index - 50;
+    var snippetIndexEnd = match.index + 50;
     var formattedText = '';
 
-    if (snippitIndexStart < 0) {
-      snippitIndexStart = 0;
+    if (snippetIndexStart < 0) {
+      snippetIndexStart = 0;
     }
 
-    if (snippitIndexEnd >= entireTextLength) {
-      snippitIndexEnd = entireTextLength - 1;
+    if (snippetIndexEnd >= entireTextLength) {
+      snippetIndexEnd = entireTextLength - 1;
     }
 
-    formattedText += '...' + this.textToSearch.substring(snippitIndexStart, highlightIndexStart);
-    formattedText += '<span class="highlight">';
-    formattedText += this.textToSearch.substring(highlightIndexStart, highlightIndexEnd);
-    formattedText += '</span>';
-    formattedText += this.textToSearch.substring(highlightIndexEnd, snippitIndexEnd) + '...';
+    var snippetHead = this.textToSearch.substring(snippetIndexStart, highlightIndexStart);
+    var highlight = this.textToSearch.substring(highlightIndexStart, highlightIndexEnd);
+    var snippetTail = this.textToSearch.substring(highlightIndexEnd, snippetIndexEnd);
+
+    formattedText = `...${snippetHead}<span class="highlight">${highlight}</span>${snippetTail}...`;
 
     return formattedText;
   }
