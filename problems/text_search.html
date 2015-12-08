@@ -27,14 +27,14 @@
 	<hr/>
 
 	<h2>Search</h2>
-	<form>
+	<form id="search_form">
 		<input type="text" id="search_input" value="llama" />
 		<input type="submit" value="Search" />
 	</form>
 
 	<h3>Results</h3>
-	Found 0 occurances of the word "llama" in the below text.
-
+	Found <span id="search_result_count">0 occurances</span> of the word <span id="search_result_query"></span> in the below text.
+	<ul id="search_result_list"></ul>
 	<hr/>
 
 	<h2>Search Text</h2>
@@ -55,5 +55,61 @@
 </div>
 
 <script src="../js/text_search.js"></script>
+<script>
+	// Wrapping this class declaration in an IIFE to
+	// keep global scope pure
+	(function() {
+		var inputElement = document.getElementById('search_input');
+		var searchFormElement = document.getElementById('search_form');
+		var searchTextElement = document.getElementById('search_text');
+		var searchResultCountElement = document.getElementById('search_result_count');
+		var searchResultQueryElement = document.getElementById('search_result_query');
+		var searchResultListElement = document.getElementById('search_result_list');
+
+		// Instantiates a TextSearchComponent found in ../js/text_search.js
+		var textSearchComponent = new Riot.TextSearchComponent({
+			searchTextElement: searchTextElement,
+			query: inputElement.value.trim(),
+			onSearchResult: handleSearchResult
+		});
+
+		/**
+		 * Updates DOM when we have new search results
+		 * @param  {String} query - search query
+		 * @param  {String[]} results - an array of search result snippits
+		 */
+		function handleSearchResult(query, results) {
+			// Update our query result
+			searchResultQueryElement.innerHTML = '"' + query + '"';
+
+			// Update count
+			var countString = results.length + ' occurance';
+			if (results.length !== 1) {
+				countString += 's';
+			}
+			searchResultCountElement.innerHTML = countString;
+
+			// Update list
+			searchResultListElement.innerHTML = null;
+			results.forEach(function(result) {
+				var li = document.createElement('li');
+				li.innerHTML = result;
+				searchResultListElement.appendChild(li);
+			});
+		}
+
+		// Search on any change in the input in real time
+		inputElement.addEventListener('input', function(event) {
+			textSearchComponent.search(event.target.value.trim());
+		});
+
+		// Search when the user submits the form
+		searchFormElement.addEventListener('submit', function(event) {
+			event.preventDefault();
+			textSearchComponent.search(inputElement.value.trim());
+		});
+
+	})();
+</script>
 </body>
 </html>
